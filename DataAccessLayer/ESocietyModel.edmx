@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ESocietyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="houseno" />
+          </Key>
+          <Property Name="houseno" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="societyid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Resident">
+          <Key>
+            <PropertyRef Name="intercom" />
+          </Key>
+          <Property Name="intercom" Type="int" Nullable="false" />
+          <Property Name="hno" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="resname" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="contact" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceProviders">
+          <Key>
+            <PropertyRef Name="aadhar" />
+          </Key>
+          <Property Name="aadhar" Type="bigint" Nullable="false" />
+          <Property Name="spname" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="contact" Type="bigint" Nullable="false" />
+          <Property Name="societyid" Type="int" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="rating" Type="int" />
+        </EntityType>
+        <EntityType Name="Society">
+          <Key>
+            <PropertyRef Name="societyid" />
+          </Key>
+          <Property Name="societyid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="societyname" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="area" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__House__societyid__2A4B4B5E">
+          <End Role="Society" Type="Self.Society" Multiplicity="1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Society">
+              <PropertyRef Name="societyid" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="societyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Resident__hno__2D27B809">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="Resident" Type="Self.Resident" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="houseno" />
+            </Principal>
+            <Dependent Role="Resident">
+              <PropertyRef Name="hno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServicePr__socie__276EDEB3">
+          <End Role="Society" Type="Self.Society" Multiplicity="1" />
+          <End Role="ServiceProviders" Type="Self.ServiceProviders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Society">
+              <PropertyRef Name="societyid" />
+            </Principal>
+            <Dependent Role="ServiceProviders">
+              <PropertyRef Name="societyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ESocietyModelStoreContainer">
+          <EntitySet Name="House" EntityType="Self.House" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resident" EntityType="Self.Resident" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceProviders" EntityType="Self.ServiceProviders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Society" EntityType="Self.Society" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__House__societyid__2A4B4B5E" Association="Self.FK__House__societyid__2A4B4B5E">
+            <End Role="Society" EntitySet="Society" />
+            <End Role="House" EntitySet="House" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Resident__hno__2D27B809" Association="Self.FK__Resident__hno__2D27B809">
+            <End Role="House" EntitySet="House" />
+            <End Role="Resident" EntitySet="Resident" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServicePr__socie__276EDEB3" Association="Self.FK__ServicePr__socie__276EDEB3">
+            <End Role="Society" EntitySet="Society" />
+            <End Role="ServiceProviders" EntitySet="ServiceProviders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ESocietyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="houseno" />
+          </Key>
+          <Property Name="houseno" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="societyid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Society" Relationship="Self.FK__House__societyid__2A4B4B5E" FromRole="House" ToRole="Society" />
+          <NavigationProperty Name="Residents" Relationship="Self.FK__Resident__hno__2D27B809" FromRole="House" ToRole="Resident" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Resident">
+          <Key>
+            <PropertyRef Name="intercom" />
+          </Key>
+          <Property Name="intercom" Type="Int32" Nullable="false" />
+          <Property Name="hno" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="resname" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contact" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="House" Relationship="Self.FK__Resident__hno__2D27B809" FromRole="Resident" ToRole="House" />
+        </EntityType>
+        <EntityType Name="ServiceProvider">
+          <Key>
+            <PropertyRef Name="aadhar" />
+          </Key>
+          <Property Name="aadhar" Type="Int64" Nullable="false" />
+          <Property Name="spname" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contact" Type="Int64" Nullable="false" />
+          <Property Name="societyid" Type="Int32" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rating" Type="Int32" />
+          <NavigationProperty Name="Society" Relationship="Self.FK__ServicePr__socie__276EDEB3" FromRole="ServiceProviders" ToRole="Society" />
+        </EntityType>
+        <EntityType Name="Society">
+          <Key>
+            <PropertyRef Name="societyid" />
+          </Key>
+          <Property Name="societyid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="societyname" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="area" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Houses" Relationship="Self.FK__House__societyid__2A4B4B5E" FromRole="Society" ToRole="House" />
+          <NavigationProperty Name="ServiceProviders" Relationship="Self.FK__ServicePr__socie__276EDEB3" FromRole="Society" ToRole="ServiceProviders" />
+        </EntityType>
+        <Association Name="FK__House__societyid__2A4B4B5E">
+          <End Role="Society" Type="Self.Society" Multiplicity="1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Society">
+              <PropertyRef Name="societyid" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="societyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Resident__hno__2D27B809">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="Resident" Type="Self.Resident" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="houseno" />
+            </Principal>
+            <Dependent Role="Resident">
+              <PropertyRef Name="hno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServicePr__socie__276EDEB3">
+          <End Role="Society" Type="Self.Society" Multiplicity="1" />
+          <End Role="ServiceProviders" Type="Self.ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Society">
+              <PropertyRef Name="societyid" />
+            </Principal>
+            <Dependent Role="ServiceProviders">
+              <PropertyRef Name="societyid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ESocietyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Houses" EntityType="Self.House" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Residents" EntityType="Self.Resident" />
+          <EntitySet Name="ServiceProviders" EntityType="Self.ServiceProvider" />
+          <EntitySet Name="Societies" EntityType="Self.Society" />
+          <AssociationSet Name="FK__House__societyid__2A4B4B5E" Association="Self.FK__House__societyid__2A4B4B5E">
+            <End Role="Society" EntitySet="Societies" />
+            <End Role="House" EntitySet="Houses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Resident__hno__2D27B809" Association="Self.FK__Resident__hno__2D27B809">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="Resident" EntitySet="Residents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServicePr__socie__276EDEB3" Association="Self.FK__ServicePr__socie__276EDEB3">
+            <End Role="Society" EntitySet="Societies" />
+            <End Role="ServiceProviders" EntitySet="ServiceProviders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ESocietyModelStoreContainer" CdmEntityContainer="ESocietyEntities">
+          <EntitySetMapping Name="Houses">
+            <EntityTypeMapping TypeName="ESocietyModel.House">
+              <MappingFragment StoreEntitySet="House">
+                <ScalarProperty Name="houseno" ColumnName="houseno" />
+                <ScalarProperty Name="societyid" ColumnName="societyid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="ESocietyModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Residents">
+            <EntityTypeMapping TypeName="ESocietyModel.Resident">
+              <MappingFragment StoreEntitySet="Resident">
+                <ScalarProperty Name="intercom" ColumnName="intercom" />
+                <ScalarProperty Name="hno" ColumnName="hno" />
+                <ScalarProperty Name="resname" ColumnName="resname" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceProviders">
+            <EntityTypeMapping TypeName="ESocietyModel.ServiceProvider">
+              <MappingFragment StoreEntitySet="ServiceProviders">
+                <ScalarProperty Name="aadhar" ColumnName="aadhar" />
+                <ScalarProperty Name="spname" ColumnName="spname" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="societyid" ColumnName="societyid" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Societies">
+            <EntityTypeMapping TypeName="ESocietyModel.Society">
+              <MappingFragment StoreEntitySet="Society">
+                <ScalarProperty Name="societyid" ColumnName="societyid" />
+                <ScalarProperty Name="societyname" ColumnName="societyname" />
+                <ScalarProperty Name="area" ColumnName="area" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
